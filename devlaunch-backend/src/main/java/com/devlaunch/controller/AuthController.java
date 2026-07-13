@@ -1,6 +1,8 @@
 package com.devlaunch.controller;
 
+import com.devlaunch.dto.request.LoginRequest;
 import com.devlaunch.dto.request.SignupRequest;
+import com.devlaunch.dto.response.LoginResponse;
 import com.devlaunch.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -14,10 +16,20 @@ public class AuthController {
     public AuthController(UserService userService) {
         this.userService = userService;
     }
+
+
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public String register(@Valid @RequestBody SignupRequest request){
         userService.register(request);
         return "user registered successfully";
+    }
+
+
+    @PostMapping("/login")
+    public LoginResponse login(@Valid @RequestBody LoginRequest request) {
+
+        return userService.login(request);
+
     }
 }

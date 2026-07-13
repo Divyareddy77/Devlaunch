@@ -12,4 +12,14 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleUserAlreadyExists(UserAlreadyExistsException ex) {
         return new ErrorResponse(ex.getMessage());
     }
+    @ExceptionHandler(InvalidPasswordException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleInvalidPassword(InvalidPasswordException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleUserNotFound(UserNotFoundException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
 }

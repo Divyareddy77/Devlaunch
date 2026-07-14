@@ -1,88 +1,214 @@
-# 🚀 DevLaunch - AI-Powered Developer Career Hub
+# 🚀 DevLaunch Backend
 
-DevLaunch is a full-stack web application designed to help students manage their placement journey from a single platform. It provides features like user authentication, resume management, job applications, study planning, coding progress tracking, and placement preparation.
-
-## ✨ Features
-
-### ✅ Authentication
-- User Registration
-- User Login
-- BCrypt Password Encryption
-- JWT (JSON Web Token) Authentication
-- Protected APIs using Spring Security
-- Global Exception Handling
-
-### 🚧 Upcoming Features
-- Role-Based Authorization (Admin/User)
-- Resume Builder
-- Job Application Tracker
-- Study Planner
-- Coding Progress Tracker
-- Dashboard
-- AI Mock Interview
+A secure and scalable backend application built with **Spring Boot** for the DevLaunch platform. The project implements **JWT-based authentication**, **Spring Security**, and **Role-Based Authorization** to provide secure access to REST APIs.
 
 ---
 
-## 🛠 Tech Stack
+# 📌 Project Overview
+
+DevLaunch Backend is designed to provide secure user authentication and authorization using modern Spring Boot best practices. It enables users to register, log in, and access protected resources based on their roles (USER or ADMIN).
+
+The application follows a layered architecture and uses Spring Security with JWT for stateless authentication.
+
+---
+
+# ✨ Features
+
+### Authentication & Security
+- ✅ User Registration
+- ✅ User Login
+- ✅ Password Encryption using BCrypt
+- ✅ JWT Token Generation
+- ✅ JWT Token Validation
+- ✅ Stateless Authentication
+- ✅ Spring Security Integration
+- ✅ Custom JWT Authentication Filter
+
+### Authorization
+- ✅ Role-Based Authorization (USER & ADMIN)
+- ✅ Protected REST APIs
+- ✅ Custom UserDetails
+- ✅ Custom UserDetailsService
+- ✅ SecurityContextHolder Authentication
 
 ### Backend
-- Java 21
-- Spring Boot
-- Spring Security
-- Spring Data JPA
-- Hibernate
-- MySQL
-- JWT (JJWT)
-- Maven
-
-### Tools
-- IntelliJ IDEA
-- MySQL Workbench
-- Postman
-- Git & GitHub
+- ✅ RESTful API Design
+- ✅ Spring Data JPA
+- ✅ MySQL Database Integration
+- ✅ Global Exception Handling
+- ✅ Clean Layered Architecture
 
 ---
 
-## 📂 Project Structure
+# 🛠️ Tech Stack
 
-```
-devlaunch-backend
-│
-├── config
-├── controller
-├── dto
-│   ├── request
-│   └── response
-├── entity
-├── exception
-├── repository
-├── security
-├── service
-└── resources
+| Technology | Purpose |
+|------------|---------|
+| Java 21 | Programming Language |
+| Spring Boot | Backend Framework |
+| Spring Security | Authentication & Authorization |
+| Spring Data JPA | Database Access |
+| MySQL | Database |
+| JWT | Stateless Authentication |
+| BCrypt | Password Hashing |
+| Maven | Dependency Management |
+
+---
+
+# 🔐 Authentication Flow
+
+```text
+User Login
+     │
+     ▼
+Email & Password Verification
+     │
+     ▼
+BCrypt Password Validation
+     │
+     ▼
+Generate JWT Token
+     │
+     ▼
+Client Stores JWT
+     │
+     ▼
+Authorization: Bearer <JWT>
+     │
+     ▼
+JwtAuthenticationFilter
+     │
+     ▼
+Validate JWT
+     │
+     ▼
+Extract Email
+     │
+     ▼
+CustomUserDetailsService
+     │
+     ▼
+Load User Details
+     │
+     ▼
+Create Authentication Object
+     │
+     ▼
+SecurityContextHolder
+     │
+     ▼
+Spring Security Authorization
+     │
+     ▼
+Protected Controller
 ```
 
 ---
 
-## 🔐 API Endpoints
+# 🔑 Role-Based Authorization
 
-### Authentication
+| Role | Access |
+|------|--------|
+| USER | User APIs |
+| ADMIN | User APIs + Admin APIs |
 
-### Register User
+Example:
+
+- `/api/auth/**` → Public
+- `/api/user/**` → USER & ADMIN
+- `/api/admin/**` → ADMIN Only
+
+---
+
+# 📡 REST API Endpoints
+
+## Authentication APIs
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | Login and receive JWT |
+
+## Protected APIs
+
+| Method | Endpoint | Access |
+|---------|----------|--------|
+| GET | `/api/user/profile` | USER / ADMIN |
+| GET | `/api/admin/dashboard` | ADMIN |
+
+---
+
+# 📂 Project Structure
+
+```text
+src
+└── main
+    ├── java
+    │   └── com.devlaunch
+    │       ├── config
+    │       ├── controller
+    │       ├── dto
+    │       ├── entity
+    │       ├── exception
+    │       ├── repository
+    │       ├── security
+    │       └── service
+    └── resources
+        └── application.properties
+```
+
+---
+
+# ▶️ How to Run the Project
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/Divyareddy77/Devlaunch.git
+```
+
+### Navigate to the Project
+
+```bash
+cd Devlaunch
+```
+
+### Configure MySQL
+
+Update `application.properties`
+
+```properties
+spring.datasource.url=YOUR_DATABASE_URL
+spring.datasource.username=YOUR_USERNAME
+spring.datasource.password=YOUR_PASSWORD
+
+jwt.secret=YOUR_SECRET_KEY
+jwt.expiration=86400000
+```
+
+### Run the Application
+
+```bash
+mvn spring-boot:run
+```
+
+Server starts on:
+
+```
+http://localhost:8080
+```
+
+---
+
+# 🧪 Testing the APIs
+
+You can test the APIs using **Postman** or **Thunder Client**.
+
+### Register
 
 ```
 POST /api/auth/register
 ```
-
-Request
-
-```json
-{
-    "email": "student@gmail.com",
-    "password": "Password@123"
-}
-```
-
----
 
 ### Login
 
@@ -90,141 +216,79 @@ Request
 POST /api/auth/login
 ```
 
-Request
-
-```json
-{
-    "email": "student@gmail.com",
-    "password": "Password@123"
-}
-```
-
 Response
 
 ```json
 {
-    "token": "JWT_TOKEN"
+  "token": "your_jwt_token"
 }
 ```
 
----
-
-### Protected API
+Use the token for protected APIs.
 
 ```
-GET /api/profile
-```
-
-Header
-
-```
-Authorization: Bearer <JWT_TOKEN>
-```
-
-Response
-
-```
-Welcome Divya!
+Authorization: Bearer <your_jwt_token>
 ```
 
 ---
 
-## 🔒 JWT Authentication Flow
+# 📈 Current Project Progress
 
-1. User registers with email and password.
-2. Password is encrypted using BCrypt.
-3. User logs in with valid credentials.
-4. Backend generates a JWT.
-5. Frontend stores the JWT.
-6. JWT is sent in the Authorization header.
-7. JwtAuthenticationFilter validates the token.
-8. SecurityContextHolder authenticates the request.
-9. Protected APIs become accessible.
-
----
-
-## ⚙️ How to Run the Project
-
-### Clone Repository
-
-```bash
-git clone https://github.com/Divyareddy77/Devlaunch.git
-```
-
-### Navigate to Backend
-
-```bash
-cd Devlaunch/devlaunch-backend
-```
-
-### Configure MySQL
-
-Create a database
-
-```
-devlaunch_db
-```
-
-Update
-
-```
-application.properties
-```
-
-with your MySQL username and password.
-
-### Run the Application
-
-Run
-
-```
-DevlaunchBackendApplication.java
-```
-
-or
-
-```bash
-mvn spring-boot:run
-```
-
----
-
-## 📸 Screenshots
+## ✅ Completed
 
 - User Registration
 - User Login
-- JWT Token Generation
-- Protected API (200 OK)
-- Unauthorized Access (401/403)
+- BCrypt Password Encryption
+- JWT Authentication
+- JWT Validation
+- Spring Security Integration
+- Custom JWT Authentication Filter
+- Role-Based Authorization
+- Custom UserDetails
+- Custom UserDetailsService
+- Protected APIs
+- Global Exception Handling
 
+## 🚧 Next Features
+
+- Job Management Module
+- Resume Management Module
+- AI Resume Review
+- Refresh Token Authentication
+- Email Verification
+- Forgot Password
+- Swagger/OpenAPI Documentation
+- Docker Deployment
+- AWS Deployment
+- Unit & Integration Testing
+- CI/CD Pipeline
 
 ---
 
-## 👩‍💻 Author
+# 🎯 Learning Outcomes
 
-**Vanga Divya Reddy**
+This project demonstrates practical knowledge of:
 
-GitHub:
-https://github.com/Divyareddy77
+- Spring Boot
+- Spring Security
+- JWT Authentication
+- BCrypt Password Encoding
+- REST API Development
+- Authentication vs Authorization
+- Role-Based Access Control (RBAC)
+- UserDetails & UserDetailsService
+- Exception Handling
+- Layered Architecture
 
 ---
 
-## 📌 Current Status
+# 👩‍💻 Author
 
-✅ User Registration
+**Divya Vanga**
 
-✅ User Login
+- GitHub: https://github.com/Divyareddy77/Devlaunch
+- LinkedIn: https://www.linkedin.com/in/divya-vanga-62249a333
 
-✅ BCrypt Password Encryption
+---
 
-✅ JWT Authentication
-
-✅ Protected APIs
-
-🚧 Role-Based Authorization (Coming Soon)
-
-🚧 Resume Builder
-
-🚧 Job Tracker
-
-🚧 AI Features
+⭐ If you found this project useful, consider giving it a **Star** on GitHub!

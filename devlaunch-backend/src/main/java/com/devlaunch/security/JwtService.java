@@ -24,7 +24,7 @@ public class JwtService {
                 secretKey.getBytes(StandardCharsets.UTF_8));
 
         return Jwts.builder()
-                .subject(String.valueOf(user.getId()))
+                .subject(user.getEmail())
                 .claim("email", user.getEmail())
                 .claim("role", user.getRole().name())
                 .issuedAt(new Date())

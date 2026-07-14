@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,11 +21,15 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public JwtAuthenticationFilter(JwtService jwtService) {
+    public JwtAuthenticationFilter(
+            JwtService jwtService,
+            CustomUserDetailsService customUserDetailsService) {
+
         this.jwtService = jwtService;
+        this.customUserDetailsService = customUserDetailsService;
     }
-
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -44,17 +49,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (jwtService.isTokenValid(jwt)) {
 
-            String subject = jwtService.extractSubject(jwt);
-            String role = jwtService.extractRole(jwt);
+            String email = jwtService.extractSubject(jwt);
 
-            List<GrantedAuthority> authorities =
-                    List.of(new SimpleGrantedAuthority("ROLE_" + role));
+            UserDetails userDetails =
+                    customUserDetailsService.loadUserByUsername(email);
 
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
-                            subject,
+                            userDetails,
                             null,
-                            authorities
+                            userDetails.getAuthorities()
                     );
 
             SecurityContextHolder.getContext()

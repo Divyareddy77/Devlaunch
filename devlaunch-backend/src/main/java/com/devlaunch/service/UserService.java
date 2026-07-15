@@ -2,7 +2,9 @@ package com.devlaunch.service;
 
 import com.devlaunch.dto.request.LoginRequest;
 import com.devlaunch.dto.request.SignupRequest;
+import com.devlaunch.dto.request.UpdateProfileRequest;
 import com.devlaunch.dto.response.LoginResponse;
+import com.devlaunch.dto.response.ProfileResponse;
 import com.devlaunch.dto.response.SignupResponse;
 import com.devlaunch.entity.User;
 import com.devlaunch.entity.enums.Role;
@@ -39,6 +41,7 @@ public class UserService {
 
         }
         User user = new User();
+        user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.USER);
@@ -62,5 +65,46 @@ public class UserService {
         String token = jwtService.generateToken(user);
 
         return new LoginResponse(token);
+    }
+    public ProfileResponse getProfile(String email) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UserNotFoundException("User not found"));
+
+        return new ProfileResponse(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getLocation(),
+                user.getBio(),
+                user.getRole().name()
+        );
+    }
+    public ProfileResponse updateProfile(
+            String email,
+            UpdateProfileRequest request) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UserNotFoundException("User not found"));
+
+        user.setName(request.getName());
+        user.setPhone(request.getPhone());
+        user.setLocation(request.getLocation());
+        user.setBio(request.getBio());
+
+        userRepository.save(user);
+
+        return new ProfileResponse(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getLocation(),
+                user.getBio(),
+                user.getRole().name()
+        );
     }
 }

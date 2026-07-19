@@ -1,99 +1,58 @@
 # 🚀 DevLaunch Backend
 
-A Spring Boot backend for **DevLaunch**, a job portal application. It provides secure user authentication, role-based authorization, and profile management using JWT and Spring Security.
-
----
+DevLaunch is a **Developer Career Hub** backend built with **Spring Boot**. It provides secure REST APIs for user authentication and resume management using JWT.
 
 ## ✨ Features
 
-- ✅ User Registration
-- ✅ User Login
-- ✅ Password Encryption (BCrypt)
-- ✅ JWT Authentication
-- ✅ Role-Based Authorization (USER & ADMIN)
-- ✅ User Profile Management
-- ✅ Protected REST APIs
-- ✅ Global Exception Handling
-- ✅ Input Validation
+- 🔐 User Registration & Login
+- 🔑 JWT Authentication & Authorization
+- 🔒 BCrypt Password Encryption
+- 📄 Resume CRUD Operations
+- ✅ Request Validation
+- ⚠️ Global Exception Handling
+- 🗄️ MySQL Database Integration
 
----
+## 🛠️ Tech Stack
 
-## 🛠 Tech Stack
-
-- Java 21
+- Java 23
 - Spring Boot
 - Spring Security
 - Spring Data JPA
 - Hibernate
 - MySQL
 - JWT
+- Lombok
 - Maven
-- Postman
 
----
-
-## 📡 API Endpoints
+## 📌 REST APIs
 
 ### Authentication
 - `POST /api/auth/register`
 - `POST /api/auth/login`
 
-### Profile
-- `GET /api/profile`
-- `PUT /api/profile`
+### Resume
+- `POST /api/resumes`
+- `GET /api/resumes`
+- `GET /api/resumes/{id}`
+- `PUT /api/resumes/{id}`
+- `DELETE /api/resumes/{id}`
 
-### Admin
-- `GET /api/admin/dashboard`
-
----
-
-## 🔐 Security
-
-- JWT-based Authentication
-- BCrypt Password Encryption
-- Stateless Session Management
-- Custom UserDetails & UserDetailsService
-- Role-Based Access Control
-
----
-
-## ▶️ How to Run
+## ▶️ Run the Project
 
 1. Clone the repository
-
-```bash
-git clone https://github.com/Divyareddy77/Devlaunch.git
-```
-
 2. Configure MySQL in `application.properties`
-
 3. Run the application
+4. Test APIs using Postman
 
-```bash
-mvn spring-boot:run
-```
+## 🚧 Upcoming Features
 
-Server starts at:
-
-```
-http://localhost:8080
-```
-
----
-
-## 🚀 Upcoming Features
-
-- Job Management
-- Job Applications
-- Resume Upload
-- Refresh Tokens
-- Email Verification
-- Swagger Documentation
-
----
+- Education Management
+- Skills Management
+- Project Management
+- Experience Management
+- Certification Management
+- AI Resume Review
 
 ## 👩‍💻 Author
 
-**Divya Reddy**
-
-GitHub: https://github.com/Divyareddy77
+**Divya Vanga**

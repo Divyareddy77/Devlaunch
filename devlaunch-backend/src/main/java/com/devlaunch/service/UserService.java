@@ -13,12 +13,14 @@ import com.devlaunch.exception.UserAlreadyExistsException;
 import com.devlaunch.exception.UserNotFoundException;
 import com.devlaunch.repository.UserRepository;
 import com.devlaunch.security.JwtService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
 
@@ -26,14 +28,6 @@ public class UserService {
 
     private final JwtService jwtService;
 
-    public UserService(UserRepository userRepository,
-                       BCryptPasswordEncoder passwordEncoder,
-                       JwtService jwtService) {
-
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-    }
     public SignupResponse register(SignupRequest request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
